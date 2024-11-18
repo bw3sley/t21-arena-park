@@ -12,6 +12,21 @@ import type { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import z from "zod";
 
+const REQUIRED_ANAMNESIS_PROGRESS = 80;
+
+function getAnswerProgress(data: unknown, totalQuestions: number) {
+    if (!data || typeof data !== "object" || totalQuestions === 0) return 0;
+
+    const answers = Object.values(data as Record<string, { answer?: unknown }>);
+    const answeredQuestions = answers.filter(({ answer }) => {
+        if (Array.isArray(answer)) return answer.length > 0;
+        if (typeof answer === "string") return answer.trim().length > 0;
+        return false;
+    }).length;
+
+    return (answeredQuestions / totalQuestions) * 100;
+}
+
 export async function generateAIObservation(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().register(auth).post("/athletes/:athleteId/anamnesis/ai-observation", {
         schema: {
@@ -20,6 +35,7 @@ export async function generateAIObservation(app: FastifyInstance) {
             params: z.object({
                 athleteId: z.string().uuid()
             }),
+            security: [{ bearerAuth: [] }],
             response: {
                 201: z.object({
                     observation: z.string()
@@ -37,7 +53,14 @@ export async function generateAIObservation(app: FastifyInstance) {
             },
 
             include: {
-                answer: true
+                answer: true,
+                form: {
+                    include: {
+                        sections: {
+                            include: { questions: true }
+                        }
+                    }
+                }
             }
         })
 
@@ -46,6 +69,12 @@ export async function generateAIObservation(app: FastifyInstance) {
         }
 
         const anamnesis = athleteForm.answer.data;
+        const totalQuestions = athleteForm.form.sections.reduce((amount, section) => amount + section.questions.length, 0);
+        const progress = getAnswerProgress(anamnesis, totalQuestions);
+
+        if (progress < REQUIRED_ANAMNESIS_PROGRESS) {
+            throw new NotFoundError("Atleta não tem 80% da anamnese feito");
+        }
 
         const prompt = `
             Você é uma Inteligência Artificial integrada à plataforma T21 Arena Park, um sistema voltado para acompanhamento e desenvolvimento de atletas com síndrome de down. A plataforma permite que profissionais de saúde e técnicos registrem avaliações detalhadas dos atletas, com foco em suas capacidades físicas, emocionais, sociais e cognitivas. Uma parte importante do acompanhamento é o formulário de anamnese, que coleta informações abrangentes sobre o histórico do atleta, sua vida diária, saúde física e mental, entre outros aspectos.

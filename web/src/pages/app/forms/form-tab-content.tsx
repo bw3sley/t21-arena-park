@@ -31,6 +31,7 @@ interface FormTabContentProps {
             title: string,
             type:
             "INPUT" |
+            "TEXTAREA" |
             "CHECKBOX" |
             "SELECT" |
             "MULTI_SELECT" |
@@ -57,7 +58,7 @@ export function FormTabContent({ athleteId, section }: FormTabContentProps) {
         values: {
             questions: section.questions.reduce((acc, question) => {
                 acc[question.id] = {
-                    answer: question.answer || (question.type === "MULTI_SELECT" ? [] : ""),
+                    answer: question.answer || (question.type === "MULTI_SELECT" || question.type === "CHECKBOX" ? [] : ""),
                     observation: question.observation || "",
                 };
                 return acc;
@@ -76,7 +77,7 @@ export function FormTabContent({ athleteId, section }: FormTabContentProps) {
     async function handleFormTabContent(data: any) {
         try {
             const _data = section.questions.map(question => {
-                const answer = data.questions?.[question.id]?.answer || "";
+                const answer = data.questions?.[question.id]?.answer || (question.type === "MULTI_SELECT" || question.type === "CHECKBOX" ? [] : "");
                 const observation = data.questions?.[question.id]?.observation || "";
     
                 return {

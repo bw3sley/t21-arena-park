@@ -128,25 +128,37 @@ export function FormQuestion({ question, register, control, setValue }: FormQues
 
             {question.type === "CHECKBOX" && question.options && (
                 <>
-                    {question.options.map((option) => (
-                        <div key={option.value} className="flex items-center space-x-2">
-                            <Controller
-                                control={control}
-                                name={`questions.${question.id}.answer.${option.value}`}
-                                render={({ field }) => (
-                                    <Checkbox
-                                        id={`question-${question.id}-option-${option.value}`}
-                                        checked={field.value || false}
-                                        onCheckedChange={(checked) => field.onChange(checked)}
-                                    />
-                                )}
-                            />
+                    <Controller
+                        control={control}
+                        name={`questions.${question.id}.answer`}
+                        render={({ field }) => (
+                            <>
+                                {question.options && question.options.map((option) => {
+                                    const currentValue = Array.isArray(field.value) ? field.value : [];
 
-                            <Label htmlFor={`question-${question.id}-option-${option.value}`}>
-                                {option.label}
-                            </Label>
-                        </div>
-                    ))}
+                                    return (
+                                        <div key={option.value} className="flex items-center space-x-2">
+                                            <Checkbox
+                                                id={`question-${question.id}-option-${option.value}`}
+                                                checked={currentValue.includes(option.value)}
+                                                onCheckedChange={(checked) => {
+                                                    field.onChange(
+                                                        checked
+                                                            ? [...currentValue, option.value]
+                                                            : currentValue.filter(value => value !== option.value)
+                                                    )
+                                                }}
+                                            />
+
+                                            <Label htmlFor={`question-${question.id}-option-${option.value}`}>
+                                                {option.label}
+                                            </Label>
+                                        </div>
+                                    )
+                                })}
+                            </>
+                        )}
+                    />
 
                     <Textarea
                         placeholder="Digite uma observação (opcional)"
@@ -221,7 +233,7 @@ export function FormQuestion({ question, register, control, setValue }: FormQues
                             className="text-sm min-h-12"
                             maxLength={10}
                             onInput={(event) => (event.currentTarget.value = formatDate(event.currentTarget.value))}
-                            {...register(`question-${question.id}`)}
+                            {...register(`questions.${question.id}.answer`)}
                         />
 
                         <PopoverTrigger asChild className="cursor-pointer">
@@ -238,7 +250,7 @@ export function FormQuestion({ question, register, control, setValue }: FormQues
                             onSelect={(selectedDate) => {
                                 setDate(selectedDate);
 
-                                setValue(`question-${question.id}`, selectedDate ? format(selectedDate, "dd/MM/yyyy") : "");
+                                setValue(`questions.${question.id}.answer`, selectedDate ? format(selectedDate, "dd/MM/yyyy") : "");
                             }}
                             disabled={{ after: new Date() }}
                         />

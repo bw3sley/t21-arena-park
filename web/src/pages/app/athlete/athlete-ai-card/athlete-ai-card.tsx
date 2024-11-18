@@ -12,6 +12,8 @@ import { RotateCcw, WandSparkles } from "lucide-react";
 
 import { toast } from "sonner";
 
+const REQUIRED_ANAMNESIS_PROGRESS = 80;
+
 export type AthleteIAObservationCardProps = {
     data: {
         athlete: {
@@ -66,7 +68,7 @@ export function AthleteAIObservationCard({ data }: AthleteIAObservationCardProps
                     </div>
 
                     <p className="text-slate-400 text-md text-justify">
-                        A IA analisará os dados preenchidos na anamnese para criar uma observação personalizada sobre o atleta. Certifique-se de que a anamnese esteja pelo menos 90% completa para habilitar esta funcionalidade.
+                        A IA analisará os dados preenchidos na anamnese para criar uma observação personalizada sobre o atleta. Certifique-se de que a anamnese esteja pelo menos 80% completa para habilitar esta funcionalidade.
                     </p>
                 </div>
             </div>
@@ -81,13 +83,13 @@ export function AthleteAIObservationCard({ data }: AthleteIAObservationCardProps
                         type="button"
                         variant="primary"
                         size="md"
-                        disabled={data.anamnesis.progress < 80}
+                        disabled={data.anamnesis.progress < REQUIRED_ANAMNESIS_PROGRESS}
                         onClick={() => handleNewIAObservation(data.athlete.id)}
                     >
                         <span>Gerar observação</span>
                     </Button>
 
-                    {data.anamnesis.progress < 80 && <span className="text-sm text-slate-400">Você precisa completar 80% ou mais da anamnese antes</span>}
+                    {data.anamnesis.progress < REQUIRED_ANAMNESIS_PROGRESS && <span className="text-sm text-slate-400">Você precisa completar 80% ou mais da anamnese antes</span>}
                 </div>
             )}
         </div>

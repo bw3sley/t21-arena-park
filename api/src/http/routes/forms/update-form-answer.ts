@@ -10,6 +10,8 @@ import type { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import z from "zod";
 
+const answerSchema = z.union([z.string(), z.array(z.string())]);
+
 export async function updateFormAnswer(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().register(auth).put("/athletes/:athleteId/forms/:slug/answers", {
         schema: {
@@ -23,11 +25,11 @@ export async function updateFormAnswer(app: FastifyInstance) {
             body: z.object({
                 questions: z.array(
                     z.object({
-                        id: z.coerce.number(),
-                        answer: z.union([z.string(), z.array(z.string())]),
-                        observation: z.string().optional(),
+                        id: z.coerce.number().int().positive(),
+                        answer: answerSchema,
+                        observation: z.string().trim().optional(),
                     })
-                ),
+                ).min(1),
             }),
             response: {
                 204: z.null(),
@@ -62,13 +64,20 @@ export async function updateFormAnswer(app: FastifyInstance) {
             throw new NotFoundError("Formulário não encontrado para o atleta");
         }
 
+        const formQuestionIds = new Set(athleteForm.form.sections.flatMap(section => section.questions.map(question => question.id)));
+        const hasInvalidQuestion = questions.some(question => !formQuestionIds.has(question.id));
+
+        if (hasInvalidQuestion) {
+            throw new NotFoundError("Pergunta não encontrada para o formulário");
+        }
+
         const existingData = athleteForm.answer?.data as Record<string, { answer: string | string[], observation?: string | null }> || {};
         const updatedData = { ...existingData };
 
         questions.forEach((question) => {
             updatedData[question.id.toString()] = {
                 answer: question.answer,
-                observation: question.observation ?? null,
+                observation: question.observation && question.observation.length > 0 ? question.observation : null,
             };
         });
 
