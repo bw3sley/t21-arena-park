@@ -17,8 +17,8 @@ export async function getMembers(app: FastifyInstance) {
             summary: "Get all members",
             security: [{ bearerAuth: [] }],
             querystring: z.object({
-                pageIndex: z.coerce.number().min(0),
-                memberName: z.string().optional(),
+                pageIndex: z.coerce.number().int().min(0),
+                memberName: z.string().trim().max(100).optional(),
                 role: z.enum(["all", "admin", "volunteer"]).default("all")
             }),
             response: {

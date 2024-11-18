@@ -46,13 +46,12 @@ import { toast } from "sonner";
 import { queryClient } from "@/lib/react-query";
 
 const updateMemberDialogFormSchema = z.object({
-    name: z.string().min(1, "O nome é obrigatório"),
+    name: z.string().trim().min(1, "O nome é obrigatório"),
     email: z.string().email("E-mail inválido"),
-    phone: z.string().nullable(),
+    phone: z.string().trim().nullable(),
     role: z.enum(["ADMIN", "MEMBER"]),
     areas: z.array(
         z.enum([
-            "UNSPECIFIED",
             "PSYCHOLOGY",
             "PHYSIOTHERAPY",
             "NUTRITION",
@@ -60,10 +59,12 @@ const updateMemberDialogFormSchema = z.object({
             "PSYCHOPEDAGOGY",
             "PHYSICAL_EDUCATION"
         ])
-    )
+    ).min(1, "Selecione pelo menos uma área").max(2, "Selecione no máximo duas áreas")
 })
 
 type UpdateMemberDialogForm = z.infer<typeof updateMemberDialogFormSchema>;
+
+type MemberArea = "PSYCHOLOGY" | "PHYSIOTHERAPY" | "NUTRITION" | "NURSING" | "PSYCHOPEDAGOGY" | "PHYSICAL_EDUCATION";
 
 interface UpdateMemberDialogProps {
     controller: (open: boolean) => void,
@@ -74,7 +75,7 @@ interface UpdateMemberDialogProps {
         email: string,
         role: "ADMIN" | "MEMBER",
         phone: string | null,
-        areas: ("UNSPECIFIED" | "PSYCHOLOGY" | "PHYSIOTHERAPY" | "NUTRITION" | "NURSING" | "PSYCHOPEDAGOGY" | "PHYSICAL_EDUCATION")[]
+        areas: ("UNSPECIFIED" | MemberArea)[]
     }
 }
 
@@ -87,7 +88,7 @@ export function UpdateMemberDialog({ controller, member }: UpdateMemberDialogPro
             email: member.email,
             phone: member.phone,
             role: member.role,
-            areas: member.areas
+            areas: member.areas.filter((area): area is MemberArea => area !== "UNSPECIFIED")
         }
     })
 
@@ -246,6 +247,12 @@ export function UpdateMemberDialog({ controller, member }: UpdateMemberDialogPro
                             />
                         )}
                     />
+
+                    {errors.areas && (
+                        <span className="text-sm font-medium text-red-500">
+                            {errors.areas.message}
+                        </span>
+                    )}
                 </div>
             </form>
 

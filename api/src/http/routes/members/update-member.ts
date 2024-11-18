@@ -8,6 +8,20 @@ import type { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import z from "zod";
 
+const memberAreaSchema = z.enum([
+    "PSYCHOLOGY",
+    "PHYSIOTHERAPY",
+    "NUTRITION",
+    "NURSING",
+    "PSYCHOPEDAGOGY",
+    "PHYSICAL_EDUCATION",
+])
+
+const memberAreasSchema = z.array(memberAreaSchema)
+    .min(1)
+    .max(2)
+    .refine(areas => new Set(areas).size === areas.length, { message: "Áreas duplicadas" });
+
 export async function updateMember(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().register(auth).put("/members/:memberId", {
         schema: {
@@ -18,19 +32,11 @@ export async function updateMember(app: FastifyInstance) {
                 memberId: z.string().uuid()
             }),
             body: z.object({
-                name: z.string(),
+                name: z.string().trim().min(1),
                 email: z.string().email(),
-                phone: z.string().nullable(),
+                phone: z.string().trim().nullable(),
                 role: z.enum(["ADMIN", "MEMBER"]),
-                areas: z.array(z.enum([
-                    "UNSPECIFIED",
-                    "PSYCHOLOGY",
-                    "PHYSIOTHERAPY",
-                    "NUTRITION",
-                    "NURSING",
-                    "PSYCHOPEDAGOGY",
-                    "PHYSICAL_EDUCATION",
-                ]))
+                areas: memberAreasSchema
             }),
             response: {
                 204: z.null(),

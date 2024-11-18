@@ -10,6 +10,20 @@ import { auth } from "@/http/middlewares/auth";
 
 import { NotFoundError } from "@/errors/not-found-error";
 
+const memberAreaSchema = z.enum([
+    "PSYCHOLOGY",
+    "PHYSIOTHERAPY",
+    "NUTRITION",
+    "NURSING",
+    "PSYCHOPEDAGOGY",
+    "PHYSICAL_EDUCATION"
+])
+
+const memberAreasSchema = z.array(memberAreaSchema)
+    .min(1)
+    .max(2)
+    .refine(areas => new Set(areas).size === areas.length, { message: "Áreas duplicadas" });
+
 export async function changeMemberArea(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().register(auth).patch("/members/:memberId/change-area", {
         schema: {
@@ -19,15 +33,7 @@ export async function changeMemberArea(app: FastifyInstance) {
                 memberId: z.string().uuid()
             }),
             body: z.object({
-                areas: z.array(z.enum([
-                    "UNSPECIFIED",
-                    "PSYCHOLOGY",
-                    "PHYSIOTHERAPY",
-                    "NUTRITION",
-                    "NURSING",
-                    "PSYCHOPEDAGOGY",
-                    "PHYSICAL_EDUCATION"
-                ])).min(1)
+                areas: memberAreasSchema
             }),
             response: {
                 204: z.null(),

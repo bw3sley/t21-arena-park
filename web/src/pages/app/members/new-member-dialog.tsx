@@ -48,13 +48,12 @@ import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 
 const newMemberDialogFormSchema = z.object({
-    name: z.string().min(1, "O nome é obrigatório"),
+    name: z.string().trim().min(1, "O nome é obrigatório"),
     email: z.string().email("E-mail inválido"),
-    phone: z.string().nullable(),
+    phone: z.string().trim().nullable(),
     role: z.enum(["ADMIN", "MEMBER", "none"]).refine(value => value !== "none", { message: "Selecione um tipo de usuário" }),
     areas: z.array(
         z.enum([
-            "UNSPECIFIED",
             "PSYCHOLOGY",
             "PHYSIOTHERAPY",
             "NUTRITION",
@@ -62,7 +61,7 @@ const newMemberDialogFormSchema = z.object({
             "PSYCHOPEDAGOGY",
             "PHYSICAL_EDUCATION"
         ])
-    ).min(1, "Selecione pelo menos uma área")
+    ).min(1, "Selecione pelo menos uma área").max(2, "Selecione no máximo duas áreas")
 })
 
 // type NewMemberDialogForm = z.infer<typeof newMemberDialogFormSchema>;
@@ -72,7 +71,7 @@ type NewMemberDialogForm = {
     email: string;
     phone: string | null;
     role: "ADMIN" | "MEMBER" | "none";
-    areas: ("UNSPECIFIED" | "PSYCHOLOGY" | "PHYSIOTHERAPY" | "NUTRITION" | "NURSING" | "PSYCHOPEDAGOGY" | "PHYSICAL_EDUCATION")[];
+    areas: ("PSYCHOLOGY" | "PHYSIOTHERAPY" | "NUTRITION" | "NURSING" | "PSYCHOPEDAGOGY" | "PHYSICAL_EDUCATION")[];
 }
 
 interface NewMemberDialogProps {
