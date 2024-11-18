@@ -10,6 +10,10 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import z from "zod";
 
+const optionalStringSchema = z.string().trim().transform(value => value.length > 0 ? value : null).nullable();
+const postalCodeSchema = z.string().trim().regex(/^\d{5}-?\d{3}$/).or(z.literal("").transform(() => null)).nullable();
+const ufSchema = z.string().trim().length(2).transform(value => value.toUpperCase()).or(z.literal("").transform(() => null)).nullable();
+
 export async function updateAthleteAddress(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().register(auth).put("/athletes/:athleteId/address", {
         schema: {
@@ -20,14 +24,14 @@ export async function updateAthleteAddress(app: FastifyInstance) {
                 athleteId: z.string().uuid()
             }),
             body: z.object({
-                street: z.string().nullable(),
-                neighborhood: z.string().nullable(), 
-                postalCode: z.string().nullable(),
-                complement: z.string().nullable(),
-                number: z.string().nullable(),
-                city: z.string().nullable(),
-                uf: z.string().nullable(),
-                country: z.string().nullable()
+                street: optionalStringSchema,
+                neighborhood: optionalStringSchema,
+                postalCode: postalCodeSchema,
+                complement: optionalStringSchema,
+                number: optionalStringSchema,
+                city: optionalStringSchema,
+                uf: ufSchema,
+                country: optionalStringSchema
             }),
             response: {
                 204: z.null()

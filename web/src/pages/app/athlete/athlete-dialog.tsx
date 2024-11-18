@@ -73,23 +73,7 @@ const athleteDialogFormSchema = z.object({
     ]).refine(value => value !== "none", { message: "Selecione um tipo sanguíneo" })
 })
 
-// type AthleteDialogForm = z.infer<typeof athleteDialogFormSchema>;
-
-type AthleteDialogForm = {
-    name: string,
-    birthDate: string,
-    handedness: "RIGHT" | "LEFT",
-    gender: "MALE" | "FEMALE",
-    bloodType:
-        "A_POSITIVE" |
-        "A_NEGATIVE" |
-        "B_POSITIVE" |
-        "B_NEGATIVE" |
-        "AB_POSITIVE" |
-        "AB_NEGATIVE" |
-        "O_POSITIVE" |
-        "O_NEGATIVE"
-}
+type AthleteDialogForm = z.infer<typeof athleteDialogFormSchema>;
 
 interface AthleteDialogProps {
     controller: (open: boolean) => void,

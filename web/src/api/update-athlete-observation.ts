@@ -3,7 +3,7 @@ import { api } from "@/lib/axios";
 export type UpdateAthleteObservationBody = {
     athleteId: string,
     areaName: string,
-    observationId: number | null,
+    observationId: number,
 
     content: string
 }

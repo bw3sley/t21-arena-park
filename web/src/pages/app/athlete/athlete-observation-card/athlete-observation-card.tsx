@@ -32,7 +32,7 @@ import { AthleteObservation } from "./athlete-observation";
 import { usePermission } from "@/hooks/use-permission";
 
 const athleteThreadFormSchema = z.object({
-    content: z.string().min(1, "O campo de observação não pode estar vazio")
+    content: z.string().trim().min(1, "O campo de observação não pode estar vazio")
 })
 
 type AthleteThreadForm = z.infer<typeof athleteThreadFormSchema>;

@@ -28,7 +28,7 @@ export async function removeAthleteObservation(app: FastifyInstance) {
                     "PSYCHOPEDAGOGY",
                     "PHYSICAL_EDUCATION",
                 ]),
-                observationId: z.coerce.number(),
+                observationId: z.coerce.number().int().positive(),
             }),
             response: {
                 204: z.null()
@@ -68,6 +68,10 @@ export async function removeAthleteObservation(app: FastifyInstance) {
 
         if (!observation) {
             throw new NotFoundError("Observação não encontrada");
+        }
+
+        if (observation.threadId !== thread.id) {
+            throw new NotFoundError("Observação não encontrada para a área e atleta");
         }
 
         if (observation.memberId !== userId) {

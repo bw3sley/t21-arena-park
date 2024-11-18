@@ -19,9 +19,11 @@ export type UpdateAthleteBody = {
 }
 
 export async function updateAthlete({ athleteId, name, birthDate, handedness, bloodType, gender }: UpdateAthleteBody) {
+    if (gender === "none" || handedness === "none" || bloodType === "none") return;
+
     await api.put(`/athletes/${athleteId}`, {
         name,
-        birthDate: parse(birthDate, 'dd/MM/yyyy', new Date()),
+        birthDate: parse(birthDate, 'dd/MM/yyyy', new Date()).toISOString(),
         bloodType,
         handedness,
         gender

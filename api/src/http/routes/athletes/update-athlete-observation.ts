@@ -12,6 +12,8 @@ import { NotFoundError } from "@/errors/not-found-error";
 
 import { UnauthorizedError } from "@/errors/unauthorized-error";
 
+const observationContentSchema = z.string().trim().min(1);
+
 export async function updateAthleteObservation(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().register(auth).put("/athletes/:athleteId/areas/:areaName/thread/observations/:observationId", {
         schema: {
@@ -28,10 +30,10 @@ export async function updateAthleteObservation(app: FastifyInstance) {
                     "PSYCHOPEDAGOGY",
                     "PHYSICAL_EDUCATION",
                 ]),
-                observationId: z.coerce.number()
+                observationId: z.coerce.number().int().positive()
             }),
             body: z.object({
-                content: z.string()
+                content: observationContentSchema
             }),
             response: {
                 204: z.null()
@@ -70,6 +72,10 @@ export async function updateAthleteObservation(app: FastifyInstance) {
 
         if (!observation) {
             throw new NotFoundError("Observação não encontrada");
+        }
+
+        if (observation.threadId !== thread.id) {
+            throw new NotFoundError("Observação não encontrada para a área e atleta");
         }
 
         if (observation.memberId !== userId) {

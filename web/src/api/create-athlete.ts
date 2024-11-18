@@ -18,6 +18,8 @@ export type CreateAthleteBody = {
 }
 
 export async function createAthlete({ name, gender, handedness, bloodType, birthDate }: CreateAthleteBody) {
+    if (gender === "none" || handedness === "none" || bloodType === "none") return;
+
     await api.post("/athletes", {
         name,
         gender,

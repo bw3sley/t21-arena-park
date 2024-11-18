@@ -10,6 +10,9 @@ import type { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import z from "zod";
 
+const optionalStringSchema = z.string().trim().transform(value => value.length > 0 ? value : null).nullable();
+const optionalEmailSchema = z.string().trim().email().or(z.literal("").transform(() => null)).nullable();
+
 export async function updateAthleteGuardian(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().register(auth).put("/athletes/:athleteId/guardian", {
         schema: {
@@ -20,11 +23,11 @@ export async function updateAthleteGuardian(app: FastifyInstance) {
                 athleteId: z.string().uuid()
             }),
             body: z.object({
-                name: z.string().nullable(),
-                email: z.string().nullable(), 
-                rg: z.string().nullable(),
-                cpf: z.string().nullable(),
-                relationshipDegree: z.string().nullable(),
+                name: optionalStringSchema,
+                email: optionalEmailSchema,
+                rg: optionalStringSchema,
+                cpf: optionalStringSchema,
+                relationshipDegree: optionalStringSchema,
                 gender: z.enum(["MALE", "FEMALE"]).nullable()
             }),
             response: {

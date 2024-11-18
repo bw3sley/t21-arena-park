@@ -67,8 +67,6 @@ const athleteDialogFormSchema = z.object({
     ]).refine(value => value !== "none", { message: "Selecione um tipo sanguíneo" })
 })
 
-// type AthleteDialogForm = z.infer<typeof athleteDialogFormSchema>;
-
 type AthleteDialogForm = {
     name: string;
     birthDate: string;

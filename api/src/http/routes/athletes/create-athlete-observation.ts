@@ -10,6 +10,8 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import z from "zod";
 
+const observationContentSchema = z.string().trim().min(1);
+
 export async function createAthleteObservation(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().register(auth).post("/athletes/:athleteId/areas/:areaName/thread/observations", {
         schema: {
@@ -28,7 +30,7 @@ export async function createAthleteObservation(app: FastifyInstance) {
                 ])
             }),
             body: z.object({
-                content: z.string().nullable(),
+                content: observationContentSchema,
             }),
             response: {
                 201: z.null()

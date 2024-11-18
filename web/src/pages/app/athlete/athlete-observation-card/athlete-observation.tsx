@@ -50,7 +50,7 @@ interface AthleteObservationProps {
 }
 
 const AthleteObservationSchema = z.object({
-    content: z.string().min(1, "O campo de observação não pode estar vazio")
+    content: z.string().trim().min(1, "O campo de observação não pode estar vazio")
 })
 
 type AthleteObservation = z.infer<typeof AthleteObservationSchema>;
@@ -110,6 +110,8 @@ export function AthleteObservation({ threads, athleteId, area }: AthleteObservat
 
     async function handleUpdateObservation(data: AthleteObservation) {
         try {
+            if (observationId === null) return;
+
             await updateAthleteObservationFn({
                 athleteId,
                 observationId,

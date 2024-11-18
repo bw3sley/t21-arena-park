@@ -9,6 +9,8 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import z from "zod";
 
+const birthDateSchema = z.coerce.date().refine(date => date <= new Date(), { message: "Data de nascimento não pode ser futura" });
+
 export async function updateAthlete(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().register(auth).put("/athletes/:athleteId", {
         schema: {
@@ -19,7 +21,7 @@ export async function updateAthlete(app: FastifyInstance) {
                 athleteId: z.string().uuid()
             }),
             body: z.object({
-                name: z.string(),
+                name: z.string().trim().min(1),
                 gender: z.enum(["MALE", "FEMALE"]),
                 handedness: z.enum(["RIGHT", "LEFT"]),
                 bloodType: z.enum([
@@ -32,13 +34,7 @@ export async function updateAthlete(app: FastifyInstance) {
                     "O_POSITIVE",
                     "O_NEGATIVE"
                 ]),
-                birthDate: z.preprocess((arg) => {
-                    if (typeof arg === "string") {
-                        return new Date(arg);
-                    }
-                    
-                    return arg;
-                }, z.date())
+                birthDate: birthDateSchema
             }),
             response: {
                 204: z.null()
