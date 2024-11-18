@@ -16,7 +16,7 @@ export async function resetPassword(app: FastifyInstance) {
             tags: ["Auth"],
             summary: "Reset user password",
             body: z.object({
-                code: z.string(),
+                code: z.string().uuid(),
                 password: z.string().min(6)
             }),
             response: {

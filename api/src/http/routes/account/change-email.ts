@@ -32,14 +32,6 @@ export async function changeEmail(app: FastifyInstance) {
 
         const userId = await request.getCurrentUserId();
 
-        const isEmailAlreadyBeingUsed = await prisma.member.findUnique({
-            where: { email }
-        })
-
-        if (isEmailAlreadyBeingUsed) {
-            return reply.status(204).send();
-        }
-
         const user = await prisma.member.findUnique({
             where: { id: userId }
         })
@@ -48,14 +40,22 @@ export async function changeEmail(app: FastifyInstance) {
             throw new NotFoundError("Usuário não encontrado");
         }
 
-        if (user.email === email) {
-            return reply.status(204).send();
-        }
-
         const doesPasswordMatch = await compare(password, user.passwordHash);
 
         if (!doesPasswordMatch) {
             throw new BadRequestError("Credenciais inválidas");
+        }
+
+        if (user.email === email) {
+            return reply.status(204).send();
+        }
+
+        const isEmailAlreadyBeingUsed = await prisma.member.findUnique({
+            where: { email }
+        })
+
+        if (isEmailAlreadyBeingUsed) {
+            throw new BadRequestError("E-mail já está em uso");
         }
 
         await prisma.member.update({

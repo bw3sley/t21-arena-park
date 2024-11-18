@@ -77,11 +77,14 @@ export function ResetPassword() {
         try {
             const code = searchParams.get("code");
 
-            if (code) {
-                await resetPasswordFn({ code, password: data.password });
-
-                navigate("/home");
+            if (!code) {
+                navigate("/");
+                return;
             }
+
+            await resetPasswordFn({ code, password: data.password });
+
+            navigate("/home");
         } catch (error) {
             errorHandler(error);
         }

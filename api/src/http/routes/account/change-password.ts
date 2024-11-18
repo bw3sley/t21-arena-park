@@ -40,16 +40,16 @@ export async function changePassword(app: FastifyInstance) {
             throw new NotFoundError("Usuário não encontrado");
         }
 
-        const isPasswordTheSame = await compare(newPassword, user.passwordHash);
-
-        if (isPasswordTheSame) {
-            return reply.status(204).send()
-        }
-
         const doesPasswordMatch = await compare(currentPassword, user.passwordHash);
 
         if (!doesPasswordMatch) {
             throw new BadRequestError("Credenciais inválidas");
+        }
+
+        const isPasswordTheSame = await compare(newPassword, user.passwordHash);
+
+        if (isPasswordTheSame) {
+            return reply.status(204).send()
         }
 
         const newPasswordHash = await hash(newPassword, 6);
@@ -61,5 +61,7 @@ export async function changePassword(app: FastifyInstance) {
                 passwordHash: newPasswordHash
             }
         })
+
+        return reply.status(204).send();
     })
 }
