@@ -1,5 +1,15 @@
 <p align="center">
-  <img alt="Logo T21 Arena Park" src="./api/github/logo.png" width="200px" />
+  <img alt="Logo T21 Arena Park" src="./api/.github/logo.png" width="200px" />
+</p>
+
+<p align="center">
+Aplicação desenvolvida para o controle de uma escola de futebol para alunos com síndrome de Down.
+</p>
+
+<p align="center">
+  <a href="#-ideia">Ideia</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-configuração-do-ambiente">Configuração do ambiente</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-tecnologias">Tecnologias</a>
 </p>
 
 ## 💻 Sobre o Projeto
