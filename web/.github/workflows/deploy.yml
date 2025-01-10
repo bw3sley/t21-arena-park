@@ -1,0 +1,28 @@
+name: Deploy front-end
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy to VPS
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "build/*"
+          target: "/var/www/react-app/"
