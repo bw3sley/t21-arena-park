@@ -1,8 +1,6 @@
 <p align="center">
-  <img alt="Logo T21 Arena Park" src=".github/logo.png" width="200px" />
+  <img alt="Logo T21 Arena Park" src="./api/github/logo.png" width="200px" />
 </p>
-
-# T21 Arena Park
 
 ## 💻 Sobre o Projeto
 
