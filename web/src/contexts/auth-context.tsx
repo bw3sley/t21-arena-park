@@ -2,9 +2,6 @@ import { createContext, useEffect, useState, type ReactNode } from "react";
 
 import cookies from "js-cookie";
 
-import { useNavigate } from "react-router-dom";
-import { api } from "@/lib/axios";
-
 type AuthContextType = {
     authenticated: boolean | null,
     loading: boolean
