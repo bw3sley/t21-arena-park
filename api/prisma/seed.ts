@@ -18,7 +18,7 @@ async function seed() {
                     name: "Wesley Bernardes",
                     email: "bw3sley@gmail.com",
                     role: "ADMIN",
-                    phone: faker.phone.number(),
+                    phone: "",
                     avatarUrl: "https://github.com/bw3sley.png",
                     passwordHash,
                     createdAt: faker.date.past()
@@ -28,7 +28,7 @@ async function seed() {
                     name: "Eduardo Sato",
                     email: "eduardo-sato@t21arenapark.com",
                     role: "ADMIN",
-                    phone: faker.phone.number(),
+                    phone: "",
                     avatarUrl: faker.image.avatarGitHub(),
                     passwordHash,
                     createdAt: faker.date.past()
