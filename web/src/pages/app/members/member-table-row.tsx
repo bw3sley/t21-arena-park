@@ -79,7 +79,7 @@ export function MemberTableRow({ member }: MemberTableRowsProps) {
         <TableRow className="group border-b border-slate-700">
             <TableCell>
                 <div className="flex gap-4">
-                    <div className="size-10 self-center rounded-full flex items-center justify-center border border-slate-700 bg-slate-600">
+                    <div className="size-10 self-center rounded-full flex items-center justify-center border flex-shrink-0 border-slate-700 bg-slate-600">
                         <span className="font-medium">{getNameInitials(member.name)}</span>
                     </div>
 
@@ -102,7 +102,7 @@ export function MemberTableRow({ member }: MemberTableRowsProps) {
             <TableCell>
                 <Dialog open={isUpdateMemberDialogOpen} onOpenChange={setIsUpdateMemberDialogOpen}>
                     <DialogTrigger asChild>
-                        <div className="group-hover:flex hidden items-center justify-center">
+                        <div className="md:group-hover:flex hidden items-center justify-center">
                             <Button type="button" size="md" variant="link" className="gap-3 p-0">
                                 <Pencil className="size-4" />
 
@@ -119,7 +119,21 @@ export function MemberTableRow({ member }: MemberTableRowsProps) {
                 {member.areas.length > 0 ? mapArea(member.areas) : <span className="text-slate-400">Nenhuma área vinculada nesse usuário</span>}
             </TableCell>
 
-            <TableCell className="flex justify-center">
+            <TableCell className="flex justify-center gap-2 md:gap-0">
+                <Dialog open={isUpdateMemberDialogOpen} onOpenChange={setIsUpdateMemberDialogOpen}>
+                    <DialogTrigger asChild>
+                        <button
+                            type="button"
+                            title="Editar o usuário"
+                            className="md:hidden border gap-2 size-9 border-slate-800 rounded-md flex items-center justify-center disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed hover:enabled:bg-slate-700/60"
+                        >
+                            <Pencil className="size-4" />
+                        </button>
+                    </DialogTrigger>
+
+                    <UpdateMemberDialog controller={setIsUpdateMemberDialogOpen} member={member} />
+                </Dialog>
+                
                 <AlertDialog open={open} onOpenChange={setOpen}>
                     <AlertDialogTrigger asChild>
                         <button

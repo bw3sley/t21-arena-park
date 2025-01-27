@@ -100,7 +100,7 @@ export function SignIn() {
                                 />
 
                                 <span className="flex size-6 flex-shrink-0 items-center justify-center text-slate-500 group-focus-within:text-lime-400 [&>svg]:size-6">
-                                    <button type="button">
+                                    <button type="button" title={isShowingPassword ? "Ocultar senha" : "Mostrar senha"}>
                                         {isShowingPassword ? (
                                             <EyeOff
                                                 strokeWidth={1.75}

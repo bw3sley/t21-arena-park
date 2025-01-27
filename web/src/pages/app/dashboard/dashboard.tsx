@@ -13,7 +13,7 @@ export function Dashboard() {
         <>
             <Helmet title="Dashboard" />
 
-            <div className="flex flex-col p-6 pb-10 gap-6 md:gap-10">
+            <div className="flex flex-col p-6 pb-14 md:pb-10 gap-6 md:gap-10 ">
                 <div className="flex flex-col gap-4">
                     <div className="space-y-2 mb-3">
                         <h1 className="text-3xl font-bold tracking-tight font-error">
