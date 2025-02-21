@@ -8,6 +8,7 @@ Aplicação desenvolvida para o controle de uma escola de futebol para alunos co
 
 <p align="center">
   <a href="#-ideia">Ideia</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-ideia">Documentação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-configuração-do-ambiente">Configuração do ambiente</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-tecnologias">Tecnologias</a>
 </p>
@@ -15,6 +16,13 @@ Aplicação desenvolvida para o controle de uma escola de futebol para alunos co
 ## 💡 Ideia
 
 O projeto consiste em uma plataforma para gerenciamento de uma escola de futebol para alunos com síndrome de Down. Com ele, é possível configurar organizações, gerenciar voluntários e atletas, além de realizar avaliações de desempenho dos alunos.
+
+## 📝 Documentação
+
+Você pode acessar a documentação da API:
+
+- **Online:** [Scalar](https://t21-arena-park.apidocumentation.com/reference).
+- **Local**: Após rodar a API localmente, acesse `/reference`.
 
 ## 🔧 Configuração do ambiente
 
