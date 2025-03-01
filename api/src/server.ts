@@ -7,6 +7,8 @@ import fastifyCors from "@fastify/cors";
 
 import fastifyJwt from "@fastify/jwt";
 
+import fastifyRateLimit from "@fastify/rate-limit";
+
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
 
 import { errorHandler } from "./error-handler";
@@ -92,6 +94,8 @@ app.register(fastifySwaggerUI, {
 app.register(fastifyJwt, { secret: env.JWT_SECRET });
 
 app.register(fastifyCors);
+
+app.register(fastifyRateLimit, { max: 100, timeWindow: "1 minute" });
 
 app.register(authenticateWithPassword);
 app.register(createAccount);

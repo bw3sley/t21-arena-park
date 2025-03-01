@@ -26,6 +26,10 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
     if (error instanceof NotFoundError) {
         reply.status(404).send({ message: error.message });
     }
+    
+    if (error.statusCode === 429) {
+        reply.status(429).send({ message: "Too many requests" });
+    }
 
     if (env.NODE_ENV === "dev") {
         console.error(error);
