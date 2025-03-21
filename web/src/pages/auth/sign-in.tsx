@@ -11,7 +11,7 @@ import { z } from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ChevronRight, Eye, EyeOff, Loader2, Send } from "lucide-react";
 
@@ -22,6 +22,8 @@ import { signIn } from "@/api/sign-in";
 import { useNavigate } from "react-router-dom";
 
 import { errorHandler } from "@/error-handler";
+
+import cookies from "js-cookie";
 
 const signInFormSchema = z.object({
     email: z.string().email("E-mail inválido"),
@@ -34,6 +36,14 @@ export function SignIn() {
     const [isShowingPassword, setIsShowingPassword] = useState(false);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+      const token = cookies.get("t21-arena-park.session-token");
+      
+      if (token) {
+        navigate('/home');
+      }
+    }, [navigate]);
 
     const { handleSubmit, register, formState: { errors, isSubmitting } } = useForm<SignInForm>({
         resolver: zodResolver(signInFormSchema)
