@@ -22,10 +22,6 @@ export function MemberTableSkeleton() {
             </TableCell>
 
             <TableCell>
-                <Skeleton className="h-4 w-[64px]" />
-            </TableCell>
-
-            <TableCell>
                 <Skeleton className="h-4 w-[240px]" />
             </TableCell>
 

@@ -188,7 +188,7 @@ export function NewMemberDialog({ controller }: NewMemberDialogProps) {
                     <Input>
                         <Control
                             placeholder="(99) 99999-9999"
-                            type="phone"
+                            type="tel"
                             className="text-sm"
                             autoComplete="off"
                             id="phone"

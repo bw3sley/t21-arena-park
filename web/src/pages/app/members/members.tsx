@@ -88,7 +88,6 @@ export function Members() {
                                     <TableRow>
                                         <TableHead className="w-[400px]">Voluntário</TableHead>
                                         <TableHead className="w-[220px]">Telefone</TableHead>
-                                        <TableHead className="w-[64px]"></TableHead>
                                         <TableHead className="w-[240px]">Área</TableHead>
                                         <TableHead className="w-[64px]"></TableHead>
                                     </TableRow>

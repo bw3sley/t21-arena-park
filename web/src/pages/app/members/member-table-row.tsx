@@ -100,32 +100,16 @@ export function MemberTableRow({ member }: MemberTableRowsProps) {
             </TableCell>
 
             <TableCell>
-                <Dialog open={isUpdateMemberDialogOpen} onOpenChange={setIsUpdateMemberDialogOpen}>
-                    <DialogTrigger asChild>
-                        <div className="md:group-hover:flex hidden items-center justify-center">
-                            <Button type="button" size="md" variant="link" className="gap-3 p-0">
-                                <Pencil className="size-4" />
-
-                                <span>Editar</span>
-                            </Button>
-                        </div>
-                    </DialogTrigger>
-
-                    <UpdateMemberDialog controller={setIsUpdateMemberDialogOpen} member={member} />
-                </Dialog>
-            </TableCell>
-
-            <TableCell>
                 {member.areas.length > 0 ? mapArea(member.areas) : <span className="text-slate-400">Nenhuma área vinculada nesse usuário</span>}
             </TableCell>
 
-            <TableCell className="flex justify-center gap-2 md:gap-0">
+            <TableCell className="flex justify-center gap-2">
                 <Dialog open={isUpdateMemberDialogOpen} onOpenChange={setIsUpdateMemberDialogOpen}>
                     <DialogTrigger asChild>
                         <button
                             type="button"
                             title="Editar o usuário"
-                            className="md:hidden border gap-2 size-9 border-slate-800 rounded-md flex items-center justify-center disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed hover:enabled:bg-slate-700/60"
+                            className="border gap-2 size-9 border-slate-800 rounded-md flex items-center justify-center disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed hover:enabled:bg-slate-700/60"
                         >
                             <Pencil className="size-4" />
                         </button>
