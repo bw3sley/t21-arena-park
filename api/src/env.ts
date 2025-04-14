@@ -8,6 +8,7 @@ const envSchema = z.object({
     SMTP_USER: z.string(),
     SMTP_PASSWORD: z.string(),
     DATABASE_URL: z.string().url(),
+    WEB_ORIGIN: z.string().url().default("http://localhost:5173"),
     PORT: z.coerce.number().default(3333)
 })
 

@@ -40,6 +40,8 @@ export async function changeMemberArea(app: FastifyInstance) {
             }
         }
     }, async (request, reply) => {
+        await request.getCurrentUserId();
+
         const { memberId } = request.params;
 
         const { areas } = request.body;

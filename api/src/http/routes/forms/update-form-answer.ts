@@ -36,6 +36,8 @@ export async function updateFormAnswer(app: FastifyInstance) {
             },
         },
     }, async (request, reply) => {
+        await request.getCurrentUserId();
+
         const { athleteId, slug } = request.params;
 
         const { questions } = request.body;

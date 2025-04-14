@@ -46,6 +46,8 @@ export async function getAthletes(app: FastifyInstance) {
             }
         }
     }, async (request, reply) => {
+        await request.getCurrentUserId();
+
         const { pageIndex, athleteName, gender } = request.query;
 
         const PAGE_SIZE = 10;

@@ -22,6 +22,8 @@ export async function removeAthlete(app: FastifyInstance) {
             }
         }
     }, async (request, reply) => {
+        await request.getCurrentUserId();
+
         const { athleteId } = request.params;
 
         await prisma.athlete.update({

@@ -35,6 +35,8 @@ export async function updateAthleteGuardian(app: FastifyInstance) {
             }
         }
     }, async (request, reply) => {
+        await request.getCurrentUserId();
+
         const { athleteId } = request.params;
 
         const { name, email, rg, cpf, relationshipDegree, gender } = request.body;

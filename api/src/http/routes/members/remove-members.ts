@@ -24,6 +24,8 @@ export async function removeMember(app: FastifyInstance) {
             }
         }
     }, async (request, reply) => {
+        await request.getCurrentUserId();
+
         const { memberId } = request.params;
 
         await prisma.memberArea.deleteMany({

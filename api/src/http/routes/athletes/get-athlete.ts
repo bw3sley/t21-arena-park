@@ -62,6 +62,8 @@ export async function getAthlete(app: FastifyInstance) {
             }
         }
     }, async (request, reply) => {
+        await request.getCurrentUserId();
+
         const { athleteId } = request.params;
 
         const athlete = await prisma.athlete.findUnique({

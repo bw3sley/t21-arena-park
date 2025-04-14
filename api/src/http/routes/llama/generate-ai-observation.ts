@@ -43,6 +43,8 @@ export async function generateAIObservation(app: FastifyInstance) {
             }
         }
     }, async (request, reply) => {
+        await request.getCurrentUserId();
+
         const { athleteId } = request.params;
 
         const athleteForm = await prisma.athleteForm.findFirst({

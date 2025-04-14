@@ -43,6 +43,8 @@ export async function updateMember(app: FastifyInstance) {
             },
         }
     }, async (request, reply) => {
+        await request.getCurrentUserId();
+
         const { memberId } = request.params;
         
         const { name, email, phone, role, areas } = request.body;
