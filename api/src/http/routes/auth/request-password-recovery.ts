@@ -43,14 +43,14 @@ export async function requestPasswordRecover(app: FastifyInstance) {
         })
 
         const transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
+            host: "gmail",
             port: env.SMTP_PORT,
             secure: env.SMTP_PORT === 465,
             auth: {
                 user: env.SMTP_USER,
                 pass: env.SMTP_PASSWORD,
             },
-            tls: { rejectUnauthorized: true }
+            tls: { rejectUnauthorized: env.NODE_ENV === "production" }
         })
 
         const mail = {
