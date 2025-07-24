@@ -18,7 +18,7 @@ import { env } from "./env";
 import { authenticateWithPassword } from "./http/routes/auth/authenticate-with-password";
 import { createAccount } from "./http/routes/auth/create-account";
 import { getProfile } from "./http/routes/auth/get-profile";
-import { requestPasswordRecover } from "./http/routes/auth/request-password.recovery";
+import { requestPasswordRecover } from "./http/routes/auth/request-password-recovery";
 import { resetPassword } from "./http/routes/auth/reset-password";
 
 import { getMembers } from "./http/routes/members/get-members";
