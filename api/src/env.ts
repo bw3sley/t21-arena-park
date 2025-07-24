@@ -4,6 +4,7 @@ const envSchema = z.object({
     NODE_ENV: z.enum(["dev", "test", "production"]).default("production"),
     JWT_SECRET: z.string(),
     OPENAI_API_KEY: z.string(),
+    SMTP_PORT: z.coerce.number().default(465),
     SMTP_USER: z.string(),
     SMTP_PASSWORD: z.string(),
     DATABASE_URL: z.string().url(),

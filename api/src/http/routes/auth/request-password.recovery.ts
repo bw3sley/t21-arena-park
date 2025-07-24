@@ -28,7 +28,7 @@ export async function requestPasswordRecover(app: FastifyInstance) {
         const { email } = request.body;
 
         const userFromEmail = await prisma.member.findUnique({
-            where: { email, deleteAt: null }
+            where: { email }
         })
 
         if (!userFromEmail) {
@@ -43,11 +43,14 @@ export async function requestPasswordRecover(app: FastifyInstance) {
         })
 
         const transporter = nodemailer.createTransport({
-            service: "gmail",
+            host: "smtp.gmail.com",
+            port: env.SMTP_PORT,
+            secure: env.SMTP_PORT === 465,
             auth: {
                 user: env.SMTP_USER,
-                pass: env.SMTP_PASSWORD
-            }
+                pass: env.SMTP_PASSWORD,
+            },
+            tls: { rejectUnauthorized: true }
         })
 
         const mail = {
