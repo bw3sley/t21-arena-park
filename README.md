@@ -25,5 +25,34 @@ Você pode acessar as pastas `api` e `web` para explorar algumas das funcionalid
 - [api](./api/README.md)
 - [web](./web/README.md)
 
+## Deploy com Coolify
+
+O deploy recomendado usa o GitHub App do Coolify com dois serviços no mesmo repositório:
+
+- `web`: base directory `web`, domínio `https://t21-arena-park.com`, porta interna `80`.
+- `api`: base directory `api`, domínio `https://api.t21-arena-park.com`, porta interna `3333`.
+
+No serviço `web`, configure a variável de build:
+
+```env
+VITE_API_URL=https://api.t21-arena-park.com
+```
+
+No serviço `api`, configure as variáveis de runtime:
+
+```env
+NODE_ENV=production
+PORT=3333
+WEB_ORIGIN=https://t21-arena-park.com
+DATABASE_URL=postgresql://...
+JWT_SECRET=...
+OPENAI_API_KEY=...
+SMTP_USER=...
+SMTP_PASSWORD=...
+SMTP_PORT=465
+```
+
+O PostgreSQL pode ser criado como serviço gerenciado no Coolify. Rode as migrations com `npx prisma migrate deploy` pelo terminal/job do Coolify antes de publicar uma versão da API que altere o schema.
+
 ## 📝 Licença
 Este projeto está sob a licença MIT. Consulte o arquivo `LICENSE` para mais detalhes.
